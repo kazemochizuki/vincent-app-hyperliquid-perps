@@ -8,32 +8,15 @@ const { VITE_APP_ID, VITE_BACKEND_URL, VITE_REDIRECT_URI } = env;
 
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-export type DCA = {
-  lastRunAt: string;
-  nextRunAt: string;
-  lastFinishedAt: string;
-  failedAt: string;
-  _id: string;
-  disabled: boolean;
-  failReason: string;
-  data: {
-    name: string;
-    purchaseAmount: number;
-    purchaseIntervalHuman: string;
-    vincentAppVersion: number;
-    pkpInfo: {
-      ethAddress: string;
-      publicKey: string;
-      tokenId: string;
-    };
-    updatedAt: string;
-  };
-};
+export interface TradePerpsRequest {
+  coin: string;
+  side: 'buy' | 'sell';
+  amount: string;
+  leverage: string;
+}
 
-export interface CreateDCARequest {
-  name: string;
-  purchaseAmount: string;
-  purchaseIntervalHuman: string;
+export interface DepositUSDCRequest {
+  amount: string;
 }
 
 export const useBackend = () => {
@@ -82,52 +65,23 @@ export const useBackend = () => {
     [authInfo]
   );
 
-  const createDCA = useCallback(
-    async (dca: CreateDCARequest) => {
-      return sendRequest<DCA>('/schedule', 'POST', dca);
+  const tradePerps = useCallback(
+    async (tradeParams: TradePerpsRequest) => {
+      return sendRequest<void>('/trade-perps', 'POST', tradeParams);
     },
     [sendRequest]
   );
 
-  const getDCAs = useCallback(async () => {
-    return sendRequest<DCA[]>('/schedules', 'GET');
-  }, [sendRequest]);
-
-  const disableDCA = useCallback(
-    async (scheduleId: string) => {
-      return sendRequest<DCA>(`/schedules/${scheduleId}/disable`, 'PUT');
-    },
-    [sendRequest]
-  );
-
-  const enableDCA = useCallback(
-    async (scheduleId: string) => {
-      return sendRequest<DCA>(`/schedules/${scheduleId}/enable`, 'PUT');
-    },
-    [sendRequest]
-  );
-
-  const editDCA = useCallback(
-    async (scheduleId: string, dca: CreateDCARequest) => {
-      return sendRequest<DCA>(`/schedules/${scheduleId}`, 'PUT', dca);
-    },
-    [sendRequest]
-  );
-
-  const deleteDCA = useCallback(
-    async (scheduleId: string) => {
-      return sendRequest<DCA>(`/schedules/${scheduleId}`, 'DELETE');
+  const depositUSDC = useCallback(
+    async (depositParams: DepositUSDCRequest) => {
+      return sendRequest<void>('/deposit-usdc', 'POST', depositParams);
     },
     [sendRequest]
   );
 
   return {
-    createDCA,
-    deleteDCA,
-    disableDCA,
-    editDCA,
-    enableDCA,
-    getDCAs,
+    tradePerps,
+    depositUSDC,
     getJwt,
   };
 };

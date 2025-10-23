@@ -1,6 +1,8 @@
 import { createEnv } from '@t3-oss/env-core';
 import { z } from 'zod';
 
+import { LIT_RPC } from '@lit-protocol/constants';
+
 // Ref: https://github.com/t3-oss/t3-env/pull/145
 const booleanStrings = ['true', 'false', true, false, '1', '0', 'yes', 'no', 'y', 'n', 'on', 'off'];
 const BooleanOrBooleanStringSchema = z
@@ -19,15 +21,23 @@ const BooleanOrBooleanStringSchema = z
 
 export const env = createEnv({
   emptyStringAsUndefined: true,
-  runtimeEnv: import.meta.env,
-  clientPrefix: 'VITE_',
-  client: {
-    VITE_APP_ID: z.coerce.number(),
-    VITE_BACKEND_URL: z.string(),
-    VITE_EXPECTED_AUDIENCE: z.string().default(window.location.origin),
-    VITE_IS_DEVELOPMENT: BooleanOrBooleanStringSchema.default(false),
-    VITE_REDIRECT_URI: z.string().default(window.location.origin),
-    VITE_SENTRY_DSN: z.string().optional(),
-    VITE_SENTRY_FILTER: z.string().optional().default('dca-frontend'),
+  runtimeEnv: process.env,
+  server: {
+    ALCHEMY_API_KEY: z.string().optional(),
+    ALCHEMY_POLICY_ID: z.string().optional(),
+    ALLOWED_AUDIENCE: z.string().url(),
+    BASE_RPC_URL: z.string().url(), // ARBITRUM_RPC_URL actually.
+    CHRONICLE_YELLOWSTONE_RPC: z.string().url().default(LIT_RPC.CHRONICLE_YELLOWSTONE),
+    CORS_ALLOWED_DOMAIN: z.string().url(),
+    DEFAULT_TX_CONFIRMATIONS: z.coerce.number().default(6),
+    IS_DEVELOPMENT: BooleanOrBooleanStringSchema,
+    MONGODB_URI: z.string().url(),
+    PORT: z.coerce.number(),
+    SENTRY_AUTH_TOKEN: z.string().optional(),
+    SENTRY_DSN: z.string().optional(),
+    SENTRY_ORG: z.string().optional(),
+    SENTRY_PROJECT: z.string().optional(),
+    VINCENT_APP_ID: z.coerce.number(),
+    VINCENT_DELEGATEE_PRIVATE_KEY: z.string(),
   },
 });

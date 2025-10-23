@@ -1,6 +1,6 @@
 {
-  "name": "dca-backend",
-  "version": "1.0.0",
+  "name": "@kazemochizuki/vincent-app-hyperliquid-perps/backend",
+  "version": "0.0.1",
   "description": "",
   "engines": {
     "node": "^22.16.0",
@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/LIT-Protocol/vincent-dca.git"
+    "url": "https://github.com/kazemochizuki/vincent-app-hyperliquid-perp.git"
   },
   "type": "module",
   "files": [
