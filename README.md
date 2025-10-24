@@ -1,6 +1,6 @@
 # vincent-app-hyperliquid-perps
 
-App:
+App: https://frontend-production-2c20.up.railway.app/
 
 This project makes user place order in Hyperliquid by Vincent App.
 
@@ -16,4 +16,4 @@ what`s updated:
 
 what`s deprecated:
 
-- DCA, Agenda & DCA: code is retained in case the Railway template doesn`t work.
+- DCA, Agenda & Mongo: code is retained in case the Railway template doesn`t work.
