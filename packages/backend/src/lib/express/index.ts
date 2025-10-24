@@ -6,16 +6,8 @@ import helmet from 'helmet';
 import { createVincentUserMiddleware } from '@lit-protocol/vincent-app-sdk/expressMiddleware';
 import { getAppInfo, getPKPInfo, isAppUser } from '@lit-protocol/vincent-app-sdk/jwt';
 
-import { handleListPurchasesRoute } from './purchases';
-import {
-  handleListSchedulesRoute,
-  handleEnableScheduleRoute,
-  handleDisableScheduleRoute,
-  handleCreateScheduleRoute,
-  handleDeleteScheduleRoute,
-  handleEditScheduleRoute,
-} from './schedules';
 import { userKey, VincentAuthenticatedRequest } from './types';
+import { handleDepositUSDCRoute, handleTradePerpsRoute } from '../ability/tradeInHyperliquid';
 import { env } from '../env';
 import { serviceLogger } from '../logger';
 
@@ -57,33 +49,8 @@ export const registerRoutes = (app: Express) => {
   }
   app.use(cors(corsConfig));
 
-  app.get('/purchases', middleware, setSentryUserMiddleware, handler(handleListPurchasesRoute));
-  app.get('/schedules', middleware, setSentryUserMiddleware, handler(handleListSchedulesRoute));
-  app.post('/schedule', middleware, setSentryUserMiddleware, handler(handleCreateScheduleRoute));
-  app.put(
-    '/schedules/:scheduleId',
-    middleware,
-    setSentryUserMiddleware,
-    handler(handleEditScheduleRoute)
-  );
-  app.put(
-    '/schedules/:scheduleId/enable',
-    middleware,
-    setSentryUserMiddleware,
-    handler(handleEnableScheduleRoute)
-  );
-  app.put(
-    '/schedules/:scheduleId/disable',
-    middleware,
-    setSentryUserMiddleware,
-    handler(handleDisableScheduleRoute)
-  );
-  app.delete(
-    '/schedules/:scheduleId',
-    middleware,
-    setSentryUserMiddleware,
-    handler(handleDeleteScheduleRoute)
-  );
+  app.post('/trade-perps', middleware, setSentryUserMiddleware, handler(handleTradePerpsRoute));
+  app.post('/deposit-usdc', middleware, setSentryUserMiddleware, handler(handleDepositUSDCRoute));
 
   serviceLogger.info(`Routes registered`);
 };
