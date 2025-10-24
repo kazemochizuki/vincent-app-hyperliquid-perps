@@ -122,9 +122,9 @@ export const TradePerps: React.FC<TradePerpsProps> = ({ onCreate }) => {
 
         <Separator className="my-8" />
 
-        <CardFooter className="flex justify-center gap-4">
+        <CardFooter className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Button
-            className="w-full bg-green-600 hover:bg-green-700"
+            className="w-full sm:w-48 bg-green-600 hover:bg-green-700"
             onClick={() => handleTradePerps('buy')}
             disabled={loading}
           >
@@ -132,7 +132,7 @@ export const TradePerps: React.FC<TradePerpsProps> = ({ onCreate }) => {
           </Button>
 
           <Button
-            className="w-full bg-red-600 hover:bg-red-700"
+            className="w-full sm:w-48 bg-red-600 hover:bg-red-700"
             onClick={() => handleTradePerps('sell')}
             disabled={loading}
           >
